@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Microchat</title>
+</head>
+<body>
+<h1>LE MICROCHAT AVEC SOCKET.IO</h1>
+
+<input type="text" placeholder="Type your message..."/>
+<button>send</button>
+
+<ul></ul>
+
+<script>
+
+    var socket = io();
+
+    function send(){
+        var _v = $('input').val();
+        socket.emit('send', _v);
+        $('input').val('');
+    };
+
+    $(function(){
+        $('button').click(send);
+    });
+
+    document.addEventListener('keyup', function(e){
+        //console.log(e.keyCode);
+        if (e.keyCode === 13) send();
+    });
+
+    socket.on('receive', function(msg){
+        $('ul').prepend('<li>'+ msg +'</li>');
+    })
+</script>
+</body>
+</html>
